@@ -1,5 +1,7 @@
 import pygame
 import sys
+from utils import load_image
+
 
 FPS = 30
 class Game:
@@ -12,8 +14,19 @@ class Game:
         
         self.clock = pygame.time.Clock()
         
+        # --------------- load image --------------
+        # Create assest dictionary for image
+        self.assets = {
+            # Background
+            'background': load_image('ui/backgrounds/background.png')
+        }
+
+        
 
     def run(self):
+        # blit background 
+        self.display.blit(self.assets['background'], (0, 0))
+        
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -23,7 +36,7 @@ class Game:
                     if event.key == pygame.K_LEFT:
                         print('Presss')
                         
-            self.screen.blit(self.display, (0, 0))
+            self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(FPS)
     
