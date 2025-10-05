@@ -33,7 +33,6 @@ class Animation:
         
         if self.loopImg:
             self.frame = (self.frame + 1)%(self.lenImgList*self.imgDuration)
-            print(self.frame)
         else:
             self.frame = min(self.frame +1, self.lenImgList*self.imgDuration - 1)
             if (self.frame >= self.lenImgList*self.imgDuration - 1):
@@ -43,5 +42,4 @@ class Animation:
         return Animation(self.imagesList, self.imgDuration, self.loopImg)
     
     def img(self):
-        print(int(self.frame/self.imgDuration))
         return self.imagesList[int(self.frame/self.imgDuration)]

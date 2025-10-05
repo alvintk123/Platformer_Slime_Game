@@ -1,7 +1,7 @@
 import pygame
 import sys
 from utils import load_image, load_images, Animation
-
+from physic_entities import PhysicsEntity
 
 FPS = 60
 class Game:
@@ -25,7 +25,8 @@ class Game:
             'player/hit': Animation(load_images('sprites/player/hit', 1), imgDuration=10, loopImg=True),
             'player/death': Animation(load_images('sprites/player/death', 1), imgDuration=10, loopImg=True),
         }
-        self.animation = self.assets['player/run'].copy()
+        
+        self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(20, 32))
         
 
     def run(self):
@@ -36,10 +37,7 @@ class Game:
             self.display.blit(self.assets['background'], (0, 0))
             
             # Update img for character
-            self.animation.update()
-            
-            # blit character
-            self.display.blit(self.animation.img(), (50, 50))
+            self.player.update()
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -48,7 +46,10 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         print('Presss')
-                        
+            
+            # Render player image
+            self.player.render(self.display)
+            
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(FPS)
