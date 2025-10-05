@@ -26,6 +26,8 @@ class PhysicsEntity:
         
         self.pos[1] += frameMovement[1]
         
+        # Add gravity force 
+        self.velocity[1] = min(5, self.velocity[1] + 0.1)
         # Update image for animation
         self.animation.update()
         
