@@ -18,7 +18,13 @@ class PhysicsEntity:
             self.action = action
             self.animation = self.game.assets[self.type + '/' + action].copy()
             
-    def update(self):
+    def update(self, movement=(0, 0)):
+        
+        frameMovement = (movement[0] + self.velocity[0], movement[1] + self.velocity[1])
+        
+        self.pos[0] += frameMovement[0]
+        
+        self.pos[1] += frameMovement[1]
         
         # Update image for animation
         self.animation.update()
