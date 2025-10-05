@@ -1,7 +1,7 @@
 import pygame
 import sys
 from utils import load_image, load_images, Animation
-
+from physic_entities import PhysicsEntity
 
 FPS = 60
 class Game:
@@ -19,13 +19,17 @@ class Game:
         self.assets = {
             # Background
             'background': load_image('ui/backgrounds/background.png'),
-            'player/idle': Animation(load_images('sprites/player/idle', 1), imgDuration=10, loopImg=True),
-            'player/run': Animation(load_images('sprites/player/run', 1), imgDuration=10, loopImg=True),
-            'player/roll': Animation(load_images('sprites/player/roll', 1), imgDuration=10, loopImg=True),
-            'player/hit': Animation(load_images('sprites/player/hit', 1), imgDuration=10, loopImg=True),
-            'player/death': Animation(load_images('sprites/player/death', 1), imgDuration=10, loopImg=True),
+            'player/idle': Animation(load_images('sprites/player/idle', 1), imgDuration=5, loopImg=True),
+            'player/run': Animation(load_images('sprites/player/run', 1), imgDuration=5, loopImg=True),
+            'player/roll': Animation(load_images('sprites/player/roll', 1), imgDuration=5, loopImg=True),
+            'player/hit': Animation(load_images('sprites/player/hit', 1), imgDuration=5, loopImg=True),
+            'player/death': Animation(load_images('sprites/player/death', 1), imgDuration=5, loopImg=True),
         }
-        self.animation = self.assets['player/run'].copy()
+        
+        # ----------------- movement -------------------
+        self.movement = [False, False]
+        
+        self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(20, 32))
         
 
     def run(self):
@@ -36,10 +40,7 @@ class Game:
             self.display.blit(self.assets['background'], (0, 0))
             
             # Update img for character
-            self.animation.update()
-            
-            # blit character
-            self.display.blit(self.animation.img(), (50, 50))
+            self.player.update((self.movement[1] - self.movement[0], 0))
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -47,8 +48,19 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        print('Presss')
-                        
+                        self.movement[0] = True
+                    if event.key == pygame.K_RIGHT:
+                        self.movement[1] = True
+                
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        self.movement[0] = False
+                    if event.key == pygame.K_RIGHT:
+                        self.movement[1] = False
+            
+            # Render player image
+            self.player.render(self.display)
+            
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(FPS)
