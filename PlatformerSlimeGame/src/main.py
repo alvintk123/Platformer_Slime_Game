@@ -1,9 +1,9 @@
 import pygame
 import sys
-from utils import load_image, load_images
+from utils import load_image, load_images, Animation
 
 
-FPS = 30
+FPS = 60
 class Game:
     def __init__(self):
         pygame.init()
@@ -19,10 +19,13 @@ class Game:
         self.assets = {
             # Background
             'background': load_image('ui/backgrounds/background.png'),
-            'player/idle': load_images('sprites/player/run', 1),
+            'player/idle': Animation(load_images('sprites/player/idle', 1), imgDuration=10, loopImg=True),
+            'player/run': Animation(load_images('sprites/player/run', 1), imgDuration=10, loopImg=True),
+            'player/roll': Animation(load_images('sprites/player/roll', 1), imgDuration=10, loopImg=True),
+            'player/hit': Animation(load_images('sprites/player/hit', 1), imgDuration=10, loopImg=True),
+            'player/death': Animation(load_images('sprites/player/death', 1), imgDuration=10, loopImg=True),
         }
-
-        self.count = 0
+        self.animation = self.assets['player/run'].copy()
         
 
     def run(self):
@@ -32,11 +35,12 @@ class Game:
             # blit background 
             self.display.blit(self.assets['background'], (0, 0))
             
+            # Update img for character
+            self.animation.update()
+            
             # blit character
-            self.display.blit(self.assets['player/idle'][self.count], (50, 50))
-            self.count += 1
-            if self.count >= len(self.assets['player/idle']):
-                self.count = 0
+            self.display.blit(self.animation.img(), (50, 50))
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
