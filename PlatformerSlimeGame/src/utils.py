@@ -1,7 +1,10 @@
 import pygame
 import os
 
-IMG_PATH = '../assets/'
+# Get base path to assets directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+IMG_PATH = os.path.join(BASE_DIR,  "../assets/")
 
 def load_image(path, scale = 1):
     img = pygame.image.load(IMG_PATH + path).convert()
