@@ -28,6 +28,10 @@ class PhysicsEntity:
         
         # Add gravity force 
         self.velocity[1] = min(5, self.velocity[1] + 0.1)
+        
+        # Hold player don't out of screen
+        if (self.pos[1] >= self.game.display.get_height() - (int(self.game.player.animation.img().get_height())+1)):
+            self.pos[1] = self.game.display.get_height() - (int(self.game.player.animation.img().get_height())+1)
         # Update image for animation
         self.animation.update()
         
