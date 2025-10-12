@@ -29,7 +29,7 @@ class Game:
         # ----------------- movement -------------------
         self.movement = [False, False]
         
-        self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(20, 32))
+        self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(13, 19))
         
 
     def run(self):
@@ -42,6 +42,8 @@ class Game:
             # Update img for character
             self.player.update((self.movement[1] - self.movement[0], 0))
             
+            # offset for screen
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()

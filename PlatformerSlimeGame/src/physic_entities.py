@@ -15,6 +15,9 @@ class PhysicsEntity:
         self.action = ''
         self.set_action('idle')
     
+    def rect(self):
+        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
+        
     def set_action(self, action):
         if action != self.action:
             self.action = action
@@ -45,3 +48,4 @@ class PhysicsEntity:
         
     def render(self, displaySurf):
         displaySurf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), self.pos)
+        pygame.draw.rect(displaySurf, (255, 255, 255), (*self.pos, *self.size), width=1)
