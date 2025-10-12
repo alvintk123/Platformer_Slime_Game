@@ -9,6 +9,8 @@ class PhysicsEntity:
         
         self.velocity = [0, 0]
         
+        # Direction flag for character
+        self.flip = False
         # set default action
         self.action = ''
         self.set_action('idle')
@@ -26,6 +28,12 @@ class PhysicsEntity:
         
         self.pos[1] += frameMovement[1]
         
+        # Update direction flag
+        if movement[0] == 1:
+            self.flip = False
+        elif movement[0] == -1:
+            self.flip = True
+            
         # Add gravity force 
         self.velocity[1] = min(5, self.velocity[1] + 0.1)
         
@@ -36,4 +44,4 @@ class PhysicsEntity:
         self.animation.update()
         
     def render(self, displaySurf):
-        displaySurf.blit(self.animation.img(), self.pos)
+        displaySurf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), self.pos)
