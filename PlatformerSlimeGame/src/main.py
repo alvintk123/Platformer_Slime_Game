@@ -2,6 +2,7 @@ import pygame
 import sys
 from utils import load_image, load_images, Animation
 from physic_entities import PhysicsEntity
+from tilemap import TileMap
 
 FPS = 60
 class Game:
@@ -24,6 +25,10 @@ class Game:
             'player/roll': Animation(load_images('sprites/player/roll', 1), imgDuration=5, loopImg=True),
             'player/hit': Animation(load_images('sprites/player/hit', 1), imgDuration=5, loopImg=True),
             'player/death': Animation(load_images('sprites/player/death', 1), imgDuration=5, loopImg=True),
+
+            # Tile Map
+            'stone': load_images('sprites/environment/tiles/stone'),
+            'large_decor': load_images('sprites/environment/tiles/large_decor'),
         }
         
         # ----------------- movement -------------------
@@ -31,6 +36,8 @@ class Game:
         self.scroll   = [0, 0]
         self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(13, 19))
         
+        # ----------------- Tile Map -------------------
+        self.tileMap = TileMap(self, tile_size=16)
 
     def run(self):
         while True:
@@ -42,6 +49,9 @@ class Game:
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width()/2 - self.scroll[0])/30
             self.scroll[1] += (self.player.rect().centery - self.display.get_height()/2 - self.scroll[1])/30  
             renderScroll = (int(self.scroll[0]), int(self.scroll[1]))
+            
+            # render tile map
+            self.tileMap.render(self.display, offset=renderScroll)
             
             # Update img for character
             self.player.update((self.movement[1] - self.movement[0], 0))
