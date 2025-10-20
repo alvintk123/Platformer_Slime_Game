@@ -46,6 +46,6 @@ class PhysicsEntity:
         # Update image for animation
         self.animation.update()
         
-    def render(self, displaySurf):
-        displaySurf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), self.pos)
-        pygame.draw.rect(displaySurf, (255, 255, 255), (*self.pos, *self.size), width=1)
+    def render(self, displaySurf, offset = (0, 0)):
+        displaySurf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+        pygame.draw.rect(displaySurf, (255, 255, 255), (self.pos[0] - offset[0], self.pos[1] - offset[1], *self.size), width=1)

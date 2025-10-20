@@ -28,22 +28,26 @@ class Game:
         
         # ----------------- movement -------------------
         self.movement = [False, False]
-        
+        self.scroll   = [0, 0]
         self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(13, 19))
         
 
     def run(self):
         while True:
             self.display.fill((0, 0, 0, 0))
-            
             # blit background 
             self.display.blit(self.assets['background'], (0, 0))
             
+            # offset for screen
+            self.scroll[0] += (self.player.rect().centerx - self.display.get_width()/2 - self.scroll[0])/30
+            self.scroll[1] += (self.player.rect().centery - self.display.get_height()/2 - self.scroll[1])/30  
+            renderScroll = (int(self.scroll[0]), int(self.scroll[1]))
+            
             # Update img for character
             self.player.update((self.movement[1] - self.movement[0], 0))
+            # Render player image
+            self.player.render(self.display, offset=renderScroll)            
             
-            # offset for screen
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -60,8 +64,6 @@ class Game:
                     if event.key == pygame.K_RIGHT:
                         self.movement[1] = False
             
-            # Render player image
-            self.player.render(self.display)
             
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
