@@ -1,7 +1,10 @@
 import pygame
 import os
 
-IMG_PATH = '../assets/'
+# Get base path to assets directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+IMG_PATH = os.path.join(BASE_DIR,  "../assets/")
 
 def load_image(path, scale = 1):
     img = pygame.image.load(IMG_PATH + path).convert()
@@ -33,7 +36,6 @@ class Animation:
         
         if self.loopImg:
             self.frame = (self.frame + 1)%(self.lenImgList*self.imgDuration)
-            print(self.frame)
         else:
             self.frame = min(self.frame +1, self.lenImgList*self.imgDuration - 1)
             if (self.frame >= self.lenImgList*self.imgDuration - 1):
@@ -43,5 +45,4 @@ class Animation:
         return Animation(self.imagesList, self.imgDuration, self.loopImg)
     
     def img(self):
-        print(int(self.frame/self.imgDuration))
         return self.imagesList[int(self.frame/self.imgDuration)]
