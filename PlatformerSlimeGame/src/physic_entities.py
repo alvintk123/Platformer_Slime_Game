@@ -1,7 +1,16 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 import pygame
 
+
+if TYPE_CHECKING:
+    from main import Game
+
+JUMPING_ACTIVE   = 1
+JUMPING_INACTIVE = -1
 class PhysicsEntity:
-    def __init__(self, game, e_type, pos, size):
+    def __init__(self, game: Game, e_type: str, pos: tuple[int, int], size: tuple[int, int]) -> None:
         self.game = game
         self.type = e_type
         self.pos  = list(pos)
@@ -49,3 +58,19 @@ class PhysicsEntity:
     def render(self, displaySurf, offset = (0, 0)):
         displaySurf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0], self.pos[1] - offset[1]))
         pygame.draw.rect(displaySurf, (255, 255, 255), (self.pos[0] - offset[0], self.pos[1] - offset[1], *self.size), width=1)
+        
+
+class Player(PhysicsEntity): 
+    def __init__(self, game: Game, pos: tuple[int, int], size: tuple[int, int]):
+        super().__init__(game, 'player', pos, size)
+        self.isJump = JUMPING_ACTIVE
+    
+    def jumping(self: Player):
+        self.velocity[1] = -3
+        
+    def update(self: Player, movement=(0, 0)):
+        super().update(movement)
+    
+    def render(self: Player, displaySurf, offset=(0, 0)):
+        super().render(displaySurf, offset)
+            
