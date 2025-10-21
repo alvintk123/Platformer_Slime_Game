@@ -1,7 +1,7 @@
 import pygame
 import sys
 from utils import load_image, load_images, Animation
-from physic_entities import PhysicsEntity
+from physic_entities import PhysicsEntity, Player
 
 FPS = 60
 class Game:
@@ -29,7 +29,7 @@ class Game:
         # ----------------- movement -------------------
         self.movement = [False, False]
         self.scroll   = [0, 0]
-        self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(13, 19))
+        self.player = Player(self, pos=(0, 0), size=(13, 19))
         
 
     def run(self):
@@ -57,6 +57,8 @@ class Game:
                         self.movement[0] = True
                     if event.key == pygame.K_RIGHT:
                         self.movement[1] = True
+                    if event.key == pygame.K_UP:
+                        self.player.jumping()
                 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
