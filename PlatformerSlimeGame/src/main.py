@@ -1,7 +1,7 @@
 import pygame
 import sys
 from utils import load_image, load_images, Animation
-from physic_entities import PhysicsEntity
+from physic_entities import PhysicsEntity, Player
 from tilemap import TileMap
 
 FPS = 60
@@ -34,7 +34,7 @@ class Game:
         # ----------------- movement -------------------
         self.movement = [False, False]
         self.scroll   = [0, 0]
-        self.player = PhysicsEntity(self, 'player', pos=(0, 0), size=(13, 19))
+        self.player = Player(self, pos=(0, 0), size=(13, 19))
         
         # ----------------- Tile Map -------------------
         self.tileMap = TileMap(self, tile_size=16)
@@ -67,6 +67,8 @@ class Game:
                         self.movement[0] = True
                     if event.key == pygame.K_RIGHT:
                         self.movement[1] = True
+                    if event.key == pygame.K_UP:
+                        self.player.jumping()
                 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
