@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 
 JUMPING_ACTIVE   = 1
 JUMPING_INACTIVE = -1
+from tilemap import TileMap
 class PhysicsEntity:
     def __init__(self, game: Game, e_type: str, pos: tuple[int, int], size: tuple[int, int]) -> None:
         self.game = game
