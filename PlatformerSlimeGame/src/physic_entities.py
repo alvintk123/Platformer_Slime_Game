@@ -1,5 +1,5 @@
 import pygame
-
+from tilemap import TileMap
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
         self.game = game
@@ -15,22 +15,47 @@ class PhysicsEntity:
         self.action = ''
         self.set_action('idle')
     
-    def rect(self):
+    def rect(self) -> pygame.Rect:
         return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
         
-    def set_action(self, action):
+    def set_action(self, action: str) -> None:
         if action != self.action:
             self.action = action
             self.animation = self.game.assets[self.type + '/' + action].copy()
             
-    def update(self, movement=(0, 0)):
-        
+    def update(self, tileMap: TileMap, movement: tuple[int, int]=(0, 0)) -> None:
+        self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
         frameMovement = (movement[0] + self.velocity[0], movement[1] + self.velocity[1])
         
         self.pos[0] += frameMovement[0]
+        entityRect = self.rect()
+        for rect in tileMap.physicRectAround(self.pos):
+            if entityRect.colliderect(rect):
+                if frameMovement[0] > 0:
+                    entityRect.right = rect.left
+                    self.collisions['right'] = True
+                if frameMovement[0] < 0:
+                    entityRect.left =rect.right
+                    self.collisions['left'] = True
+                
+                # update position of image 
+                self.pos[0] = entityRect.x
         
-        self.pos[1] += frameMovement[1]
-        
+        self.pos[1] += frameMovement[1] 
+        entityRect = self.rect()
+        for rect in tileMap.physicRectAround(self.pos):
+            if entityRect.colliderect(rect):
+                if frameMovement[1] > 0:
+                    entityRect.bottom = rect.top
+                    self.collisions['down'] = True
+                if frameMovement[1] < 0:
+                    entityRect.top =rect.bottom
+                    self.collisions['up'] = True
+                
+                # update position of image
+                self.pos[1] = entityRect.y
+            
+            
         # Update direction flag
         if movement[0] == 1:
             self.flip = False

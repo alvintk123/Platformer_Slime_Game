@@ -54,7 +54,7 @@ class Game:
             self.tileMap.render(self.display, offset=renderScroll)
             
             # Update img for character
-            self.player.update((self.movement[1] - self.movement[0], 0))
+            self.player.update(self.tileMap, (self.movement[1] - self.movement[0], 0))
             # Render player image
             self.player.render(self.display, offset=renderScroll)            
             
