@@ -90,13 +90,17 @@ class Player(PhysicsEntity):
     def __init__(self, game: Game, pos: tuple[int, int], size: tuple[int, int]):
         super().__init__(game, 'player', pos, size)
         self.isJump = JUMPING_ACTIVE
-    
+
     def jumping(self: Player):
-        self.velocity[1] = -3
+        if self.isJump == JUMPING_ACTIVE:
+            self.velocity[1] = -3
+            self.isJump      = JUMPING_INACTIVE
         
-    def update(self: Player, movement=(0, 0)):
-        super().update(movement)
-    
+    def update(self: Player, tileMap: TileMap, movement: tuple[int, int]=(0, 0)):
+        super().update(tileMap, movement)
+        if self.collisions['down']:
+            self.isJump = JUMPING_ACTIVE
+            
     def render(self: Player, displaySurf, offset=(0, 0)):
         super().render(displaySurf, offset)
             

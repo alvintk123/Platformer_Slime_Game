@@ -12,7 +12,7 @@ class TileMap:
         self.offGridTtiles = []
         for i in range(10):
             self.tileMap[str(1 + i) + ';10'] = {'type': 'stone', 'variant': 1, 'pos': (1+i, 10)}
-            self.tileMap['10;' + str(5 + i)] = {'type': 'stone', 'variant': 1, 'pos': (10, 5 + i)}
+            self.tileMap['10;' + str(i)] = {'type': 'stone', 'variant': 1, 'pos': (10, i)}
     
     # Find tile map around position
     # return -> list of dictionary of tile (type, variant, pos)
